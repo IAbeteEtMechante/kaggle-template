@@ -1,0 +1,7 @@
+*.vscode/*
+*submit*
+env
+output/*
+input/*
+submission.csv
+*.ipynb_checkpoints/*
