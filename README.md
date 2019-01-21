@@ -10,6 +10,8 @@ pip install -r requirements.txt
 rm -rf .git
 git init
 git remote add origin https://github.com/my-username/my-repo
+git add .
+git commit -m "Initial setup"
 git push -u origin master
 cd input
 kaggle competitions download -c kaggle-competition-slug
