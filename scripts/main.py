@@ -320,18 +320,21 @@ class Model:
         predictions = model.predict(test)
         return predictions
 
-    def save_predictions(cls, predictions, score=0):
+    def save_predictions(cls, predictions, score=0, id_col=False):
         now = str(time.time()).split('.')[0]
         df = cls.get_df('test', False, True)
         target = cls.target_col
         df[target] = predictions
-        if not os.path.exists('output'):
-            os.makedirs('output')
-        if os.path.exists('output'):
-            df[[df.columns[0],
-                target]].to_csv('output/submit__' + str(int(score * 100000))
+        if not id_col:
+            id_col = df.columns[0]
+        if not os.path.exists(path + '/output'):
+            os.makedirs(path + '/output')
+        if os.path.exists(path + '/output'):
+            df[[id_col,
+                target]].to_csv(path + '/output/submit__' +
+                                str(int(score * 100000))
                                 + '__' + now + '.csv', index=False)
-        df[[df.columns[0], target]].to_csv('submission.csv', index=False)
+        df[[id_col, target]].to_csv('submission.csv', index=False)
 
 
 class Data(Explore, Clean, Engineer, Model):
@@ -476,12 +479,13 @@ def run(d, model, parameters):
 model = LogisticRegression
 parameters = {}
 cols_to_ignore = ['PassengerId']
+id_col = 'PassengerId'
 path = '.'
-if os.getcwd().split('/')[0] == 'kaggle':
+if os.getcwd().split('/')[1] == 'kaggle':
     path = '..'
 d = Data(path + '/input/train.csv',
          path + '/input/test.csv',
          'Survived',
          ignore=cols_to_ignore)
 predictions, score = run(d, model, parameters)
-d.save_predictions(predictions, score)
+d.save_predictions(predictions, score, id_col)
