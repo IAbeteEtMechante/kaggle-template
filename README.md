@@ -4,9 +4,10 @@ Template to quickly get started on Kaggle competitions.
 **To get started:**
 ```
 git clone https://github.com/alhankeser/kaggle-template my-kaggle-competition
-python3 -m virtualenv env
+virtualenv env
 source env/bin/activate
 pip install -r requirements.txt
+kaggle kernels pull -p scripts -m kaggleuser/kernel-name
 rm -rf .git
 git init
 git remote add origin https://github.com/my-username/my-repo
